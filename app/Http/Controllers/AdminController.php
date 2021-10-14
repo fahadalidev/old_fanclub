@@ -129,6 +129,19 @@ class AdminController extends Controller
 
 	}//<--- End Method
 
+    public function streamSetting(){
+        $streamLimit = AdminSettings::first();
+        return view('admin.streamLimit',compact('streamLimit'));
+    }
+    public function streamSettingUpdate(){
+        if(isset($_POST['limit'])){
+            $streamLimit = AdminSettings::where('stream_sub_limit','>=',0)->update([
+                'stream_sub_limit'=> $_POST['limit']
+            ]);
+            return redirect('panel/admin/streamSetting');
+        }
+    }
+
 	public function update($id, Request $request)
 	{
     $user = User::findOrFail($id);

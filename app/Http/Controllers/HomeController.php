@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Subscriptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -96,8 +97,9 @@ class HomeController extends Controller
         			->orderBy( 'updates.id', 'desc' )
         			->select('updates.*')
         			->paginate($this->settings->number_posts_show);
+            $subscriber_count = Subscriptions::where('stripe_plan',Auth::user()->plan)->count();
 
-          return view('index.home-session', ['users' => $users, 'updates' => $updates]);
+          return view('index.home-session', ['subscriber_count'=>$subscriber_count,'users' => $users, 'updates' => $updates]);
 
         }
     }
